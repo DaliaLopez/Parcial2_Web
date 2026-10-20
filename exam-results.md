@@ -24,3 +24,24 @@ Registrar el resultado de `npm test`.
 | 3. Si la regla simulada rechaza, conserva active y no guarda. | Pendiente |
 
 Resumen de ejecución: pendiente.
+
+Esto fue lo que me salió en consola:
+
+> parcial-practico-2@1.0.0 test
+> jest --runInBand
+
+ PASS  src/reservations/reservations.service.spec.ts
+  ● Console
+
+    console.log
+      ✔ Console Ninja extension is connected to Nest.js, see https://tinyurl.com/2vt8jxzw
+
+      at new oA (../../.vscode/extensions/wallabyjs.console-ninja-1.0.544/out/buildHook/index.js:1:4295523)
+
+ PASS  src/reservations/reservation-rules.service.spec.ts
+
+Test Suites: 2 passed, 2 total
+Tests:       3 passed, 3 total
+Snapshots:   0 total
+Time:        1.611 s, estimated 2 s
+Ran all test suites.
