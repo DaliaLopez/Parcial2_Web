@@ -1,7 +1,7 @@
 import { ConflictException } from '@nestjs/common';
 import { ReservationEntity } from './entities/reservation.entity';
 import { ReservationRulesService } from './reservation-rules.service';
-import { beforeEach, describe, it } from 'node:test';
+import { beforeEach, describe, it, expect } from '@jest/globals';
 
 describe('ReservationRulesService', () => {
   let service: ReservationRulesService;
@@ -20,6 +20,6 @@ describe('ReservationRulesService', () => {
     } as ReservationEntity;
 
     // TODO TEST 1: Check the real rule's rejection with ConflictException.
-    throw new Error('TODO TEST 1: complete the cancellation rule test');
+    expect(() => service.ensureCanCancel(reservation)).toThrow(ConflictException)
   });
 });

@@ -5,7 +5,7 @@ import { RoomEntity } from '../rooms/entities/room.entity';
 import { ReservationEntity } from './entities/reservation.entity';
 import { ReservationRulesService } from './reservation-rules.service';
 import { ReservationsService } from './reservations.service';
-import { beforeEach, describe, it } from 'node:test';
+import { beforeEach, describe, expect, it, jest } from '@jest/globals';
 
 describe('ReservationsService', () => {
   let service: ReservationsService;
@@ -50,7 +50,16 @@ describe('ReservationsService', () => {
     const savedReservation = { ...reservation, status: 'cancelled' } as ReservationEntity;
 
     // TODO TEST 2: Arrange dependencies, call cancel(7), and check the required behavior.
-    throw new Error('TODO TEST 2: complete the successful cancellation test');
+    reservationsRepositoryMock.findOne.mockResolvedValue(reservation);
+    reservationsRepositoryMock.save.mockResolvedValue(savedReservation);
+
+    const result = await service.cancel(7);
+
+    expect(reservationRulesServiceMock.ensureCanCancel).toHaveBeenCalledWith(reservation);
+    expect(reservationsRepositoryMock.save).toHaveBeenCalledWith(
+      expect.objectContaining({ status: 'cancelled' }) as any
+    );
+    expect(result).toEqual(savedReservation);
   });
 
   it('does not change or save a reservation when the rule rejects cancellation', async () => {
