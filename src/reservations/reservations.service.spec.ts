@@ -19,6 +19,12 @@ describe('ReservationsService', () => {
   let reservationRulesServiceMock: { ensureCanCancel: jest.Mock };
 
   beforeEach(async () => {
+    reservationsRepositoryMock = {
+      findOne: jest.fn<(options: any) => Promise<ReservationEntity | null>>(),
+      find: jest.fn<(options: any) => Promise<ReservationEntity[]>>(),
+      create: jest.fn(),
+      save: jest.fn<(options: any) => Promise<ReservationEntity>>(),
+    };
     roomsRepositoryMock = { findOneBy: jest.fn() };
     reservationRulesServiceMock = { ensureCanCancel: jest.fn() };
 
@@ -31,6 +37,7 @@ describe('ReservationsService', () => {
       ],
     }).compile();
     service = moduleRef.get(ReservationsService);
+
   });
 
 
