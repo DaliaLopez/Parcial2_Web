@@ -9,22 +9,16 @@ import { beforeEach, describe, expect, it, jest } from '@jest/globals';
 
 describe('ReservationsService', () => {
   let service: ReservationsService;
-  let reservationsRepositoryMock: {
-    findOne: jest.Mock;
-    find: jest.Mock;
-    create: jest.Mock;
-    save: jest.Mock;
+  let reservationsRepositoryMock = {
+    findOne: jest.fn<(options: any) => Promise<ReservationEntity | null>>(),
+    find: jest.fn<(options: any) => Promise<ReservationEntity[]>>(),
+    create: jest.fn(),
+    save: jest.fn<(options: any) => Promise<ReservationEntity>>(),
   };
   let roomsRepositoryMock: { findOneBy: jest.Mock };
   let reservationRulesServiceMock: { ensureCanCancel: jest.Mock };
 
   beforeEach(async () => {
-    reservationsRepositoryMock = {
-      findOne: jest.fn(),
-      find: jest.fn(),
-      create: jest.fn(),
-      save: jest.fn(),
-    };
     roomsRepositoryMock = { findOneBy: jest.fn() };
     reservationRulesServiceMock = { ensureCanCancel: jest.fn() };
 
@@ -38,6 +32,7 @@ describe('ReservationsService', () => {
     }).compile();
     service = moduleRef.get(ReservationsService);
   });
+
 
   it('cancels an active reservation and returns the saved result', async () => {
     const reservation = {
@@ -73,6 +68,15 @@ describe('ReservationsService', () => {
 
     // TODO TEST 3: Make the mock rule reject this ACTIVE reservation, as requested.
     // Check the exception, the unchanged state, and the absence of a save() call.
-    throw new Error('TODO TEST 3: complete the rejected cancellation test');
+    reservationsRepositoryMock.findOne.mockResolvedValue(reservation);
+
+    reservationRulesServiceMock.ensureCanCancel.mockImplementation(() => {
+      throw new ConflictException('Rule rejects the cancellation');
+    });
+
+    await expect(service.cancel(9)).rejects.toBeInstanceOf(ConflictException);
+
+    expect(reservation.status).toBe('active');
+    expect(reservationsRepositoryMock.save).not.toHaveBeenCalled();
   });
 });
