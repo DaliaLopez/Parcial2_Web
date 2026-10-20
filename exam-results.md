@@ -4,14 +4,14 @@ Registrar resultados reales después de implementar y probar los endpoints. Sust
 
 | Petición y datos utilizados | Código esperado | Código obtenido | Observación |
 | --- | --- | --- | --- |
-| Crear una reserva con datos válidos y sala existente. | 201 | Pendiente | |
-| Crear con participants como texto. | 400 | Pendiente | |
-| Crear con una propiedad adicional, como status. | 400 | Pendiente | |
-| Crear con una sala inexistente. | 404 | Pendiente | |
-| Cancelar una reserva activa y consultar el cambio guardado. | 200 | Pendiente | |
-| Cancelar de nuevo la misma reserva. | 409 | Pendiente | |
-| Intentar cancelar con ID abc. | 400 | Pendiente | |
-| Intentar cancelar con un ID entero inexistente. | 404 | Pendiente | |
+| Crear una reserva con datos válidos y sala existente. | 201 | 201 | |
+| Crear con participants como texto. | 400 | 400 | |
+| Crear con una propiedad adicional, como status. | 400 | 400 | |
+| Crear con una sala inexistente. | 404 | 404 | |
+| Cancelar una reserva activa y consultar el cambio guardado. | 200 | 200 | Sale los datos de la reserva con el estado cambiado |
+| Cancelar de nuevo la misma reserva. | 409 | 409 | The reservation has already been cancelled |
+| Intentar cancelar con ID abc. | 400 | 400 | Validation failed (numeric string is expected) |
+| Intentar cancelar con un ID entero inexistente. | 404 | 404 | Reservation with id 10000 was not found |
 
 ## Pruebas unitarias
 
